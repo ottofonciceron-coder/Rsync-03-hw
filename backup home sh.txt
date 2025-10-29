@@ -1,0 +1,21 @@
+#!/bin/bash
+# Скрипт для ежедневного зеркального бэкапа домашней директории 
+
+LOGFILE="/var/log/rsync_backup.log"
+SRC="$(getent passwd "$SUDO_USER" | cut -d: -f6)"
+DEST="/tmp/backup"
+
+# Создаём каталог назначения, если его не существует 
+mkdir -p "$DEST"
+
+# Запускаем rsync с зеркалированием и проверкой хэшей
+rsync -av --delete --exclude='.*' --checksum "$SRC" "$DEST" >> "$LOGFILE" 2>&1
+
+# Проверяем код возврата rsync
+if [ $? -eq 0 ]; then
+    logger "RSYNC BACKUP: успешное завершение резервного копирования для пользователя $USER"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Backup completed successfully" >> "$LOGFILE"
+else
+    logger "RSYNC BACKUP: ошибка при резервном копировании для пользователя $USER"
+    echo "$(date '+%Y-%m-%d %H:%M:%S') - Backup failed" >> "$LOGFILE"
+fi
