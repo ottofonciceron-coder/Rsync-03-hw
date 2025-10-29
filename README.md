@@ -21,7 +21,7 @@ rsync -av --delete --exclude='.*' --checksum ~/ /tmp/backup/
 ```
 
 
-![zadanie1](https://github.com//ottofonciceron-coder/Rsync-03-hw/blob/main/rsync.png)`
+![zadanie1](https://github.com/ottofonciceron-coder/Rsync-03-hw/blob/main/rsync.png)`
 
 ---
 
